@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    command: >
+      python -m debugpy --listen 0.0.0.0:5678 --wait-for-client -m pytest
+    depends_on:
+      - test_db
+    volumes:
+      - .:/app
+    ports:
+      - "5678:5678"  # Expose the debugging port
+    environment:
+      - DB_USER=test_foodics
+      - DB_PASSWORD=test_foodics
+      - DB_NAME=test_foodics_db
+      - DB_HOST=test_db
+      - DB_PORT=5432
+
+  test_db:
+    image: postgres:17
+    tmpfs:
+      - /var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=test_foodics
+      - POSTGRES_PASSWORD=test_foodics
+      - POSTGRES_DB=test_foodics_db

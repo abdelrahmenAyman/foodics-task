@@ -1,0 +1,32 @@
+services:
+  web:
+    build:
+      context: .
+    command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8000 --reload
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/app
+    depends_on:
+      - db
+    environment:
+      - DB_USER=foodics
+      - DB_PASSWORD=foodics
+      - DB_NAME=foodics_db
+      - DB_HOST=db
+      - DB_PORT=5432
+      - SENDGRID_API_KEY=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
+      - FROM_EMAIL=abdelrahmen.ayman10@gmail.com
+      - MERCHANT_EMAIL=abdelrahmenayman7@gmail.com
+
+
+  db:
+    image: postgres:17
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=foodics
+      - POSTGRES_PASSWORD=foodics
+      - POSTGRES_DB=foodics_db
+volumes:
+  postgres_data:

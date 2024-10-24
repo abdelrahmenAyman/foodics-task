@@ -1,0 +1,2 @@
+class IngredientStockNotEnough(Exception):
+    pass

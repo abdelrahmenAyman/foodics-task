@@ -15,6 +15,8 @@ All commands are best run through the provided MAKE file, it abstracts the inter
 The app contains an auto-generated docs using swagger that can be used to try out the app routes.
 ####
 The app structure was designed to go with a larger codebase for demonstration purposes.
+####
+Environment variables and secrets are included in the docker-compose file to make it easier to run the project without the hassle of creating a .env file on your machine, in typical production environment this should not be the case.
 
 ## Project Structure
 ```sh

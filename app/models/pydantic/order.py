@@ -1,4 +1,8 @@
+from datetime import datetime
+
 from pydantic import BaseModel, Field, field_validator
+
+from app.models import db as models
 
 
 class OrderItem(BaseModel):
@@ -22,3 +26,9 @@ class OrderCreate(BaseModel):
         if not v:
             raise ValueError("Products field cannot be empty.")
         return v
+
+
+class OrderRead(BaseModel):
+    id: int
+    created_at: datetime
+    order_items: list[models.OrderItem]

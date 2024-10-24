@@ -40,3 +40,13 @@ def products() -> list[models.Product]:
         session.commit()
 
         return list(session.exec(select(models.Product)).all())
+
+
+@pytest.fixture
+def orders(products):
+    order_items = [models.OrderItem(product=product, quantity=1) for product in products]
+    orders = [models.Order(order_items=[order_item]) for order_item in order_items]
+    with Session(engine) as session:
+        session.add_all(orders)
+        session.commit()
+        return list(session.exec(select(models.Order)).all())

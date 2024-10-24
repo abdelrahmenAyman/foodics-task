@@ -131,3 +131,28 @@ class TestCreateOrderRoutes:
         assert response.status_code == 201
         assert self.mock_email.call_count == 0
         assert not session.get(models.Ingredient, 1).is_alerted
+
+
+@pytest.mark.asyncio
+class TestListOrdersRoute:
+    url = "/orders/"
+
+    async def test_list_orders_success(self, client, orders, session):
+        response = client.get(self.url)
+        json_response = response.json()
+        session.add(orders[0])
+
+        assert response.status_code == 200
+        assert len(json_response) == len(orders)
+        assert json_response[0]["id"] == orders[0].id
+        assert len(json_response[0]["order_items"]) == len(orders[0].order_items)
+
+    async def test_list_orders_with_offset_and_limit(self, client, orders, session):
+        response = client.get(f"{self.url}?offset=1&limit=2")
+        json_response = response.json()
+        session.add(orders[1])
+
+        assert response.status_code == 200
+        assert len(json_response) == 2
+        assert json_response[0]["id"] == orders[1].id
+        assert len(json_response[0]["order_items"]) == len(orders[1].order_items)

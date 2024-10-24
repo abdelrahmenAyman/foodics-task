@@ -22,3 +22,7 @@ class Order:
         session.commit()
         session.refresh(order)
         return order
+
+    @classmethod
+    async def list(cls, offset: int, limit: int, session: Session):
+        return session.exec(select(models.Order).offset(offset).limit(limit)).all()
